@@ -89,6 +89,7 @@ def master(
 
         # Re-define the global parameters and update iterations counter
         parameters = (coefficients, intercept)
+        model = set_model_params(model, parameters)
         iteration += 1
 
     return {
