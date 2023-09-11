@@ -3,6 +3,7 @@
 """ Sample code to test the federated algorithm with a mock client
 """
 import os
+import numpy as np
 from vantage6.tools.mock_client import ClientMockProtocol
 
 
@@ -30,7 +31,7 @@ master_task = client.create_new_task(
         'method': 'master',
         'kwargs': {
             'org_ids': [0, 1],
-            'max_iter': 15
+            'max_iter': 5
         }
     },
     organization_ids=[0, 1]
@@ -38,3 +39,6 @@ master_task = client.create_new_task(
 results = client.get_results(master_task.get('id'))
 model = results[0]['model']
 print(model)
+
+X = np.array([[0, 0, 0]])
+print(model.predict_proba(X))

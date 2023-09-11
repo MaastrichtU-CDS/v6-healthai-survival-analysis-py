@@ -72,20 +72,35 @@ def master(
         info(f'Results: {results}')
 
         # TODO: dimension of coefficients should not be hard coded
-        # Average model weights with the federated average method
+        # Average model weights with weighted average
         info('Run global averaging for model weights')
         coefficients = np.zeros((1, 3))
         for i in range(coefficients.shape[1]):
-            coefficients[0, i] = np.mean([
-                result['model'].coef_[0, i] for result in results
+            coefficients[0, i] = np.sum([
+                result['model'].coef_[0, i]*result['size']
+                for result in results
+            ]) / np.sum([
+                result['size'] for result in results
             ])
-        intercept = np.mean([result['model'].intercept_ for result in results])
+        intercept = np.sum([
+            result['model'].intercept_*result['size'] for result in results
+        ]) / np.sum([
+            result['size'] for result in results
+        ])
         intercept = np.array([intercept])
 
         # TODO: how to average losses and accuracy?
-        # Average loss and accuracy with a simple average
-        loss = np.mean([result['loss'] for result in results])
-        accuracy = np.mean([result['accuracy'] for result in results])
+        # Average loss and accuracy with weighted average
+        loss = np.sum([
+            result['loss']*result['size'] for result in results
+        ]) / np.sum([
+            result['size'] for result in results
+        ])
+        accuracy = np.sum([
+            result['accuracy']*result['size'] for result in results
+        ]) / np.sum([
+            result['size'] for result in results
+        ])
 
         # Re-define the global parameters and update iterations counter
         parameters = (coefficients, intercept)
@@ -178,7 +193,8 @@ def RPC_logistic_regression_partial(
     results = {
         'model': model,
         'loss': loss,
-        'accuracy': accuracy
+        'accuracy': accuracy,
+        'size': X_train.shape[0]
     }
 
     return results
