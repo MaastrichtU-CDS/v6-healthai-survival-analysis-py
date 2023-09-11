@@ -108,8 +108,7 @@ def master(
         iteration += 1
 
     return {
-        'coefficients': model.coef_,
-        'intercept': model.intercept_,
+        'model': model,
         'loss': loss,
         'accuracy': accuracy
     }
