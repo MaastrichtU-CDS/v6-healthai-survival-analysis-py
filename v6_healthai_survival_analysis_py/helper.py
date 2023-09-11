@@ -5,11 +5,10 @@
 import time
 
 import numpy as np
-import pandas as pd
 
 from sklearn.linear_model import LogisticRegression
 from vantage6.tools.util import info
-from typing import Tuple, Union, List
+from typing import Tuple, Union
 
 XY = Tuple[np.ndarray, np.ndarray]
 LogRegParams = Union[XY, Tuple[np.ndarray]]

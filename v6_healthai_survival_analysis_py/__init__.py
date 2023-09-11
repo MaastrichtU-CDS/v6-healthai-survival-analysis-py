@@ -140,7 +140,8 @@ def RPC_logistic_regression_partial(
     )
     df['survival'] = df.apply(
         lambda x: 'dead' if ((x['days'] <= 2*365) and
-                         (x['vital_status'] == 'dead')) else 'alive',
+                             (x['vital_status'] == 'dead'))
+        else 'alive',
         axis=1
     )
 
